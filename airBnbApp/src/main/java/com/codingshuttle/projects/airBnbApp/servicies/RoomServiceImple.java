@@ -25,6 +25,8 @@ public class RoomServiceImple implements RoomService {
 
     private final HotelRepository hotelRepository;
 
+    private final InventoryService inventoryService;
+
     @Override
     public RoomDto createNewRoom(RoomDto roomDto, Long hotelId) {
         log.info("Creating room in hotel id :"+hotelId);
@@ -37,6 +39,9 @@ public class RoomServiceImple implements RoomService {
          room.setHotel(hotel);
          room =roomRepository.save(room);
          //TODO : if hotel is already active create this rooms inventory
+        if(hotel.getActive()){
+            inventoryService.initilizeRoomForAYear(room);
+        }
         log.info("Created room in hotel id :"+hotelId+"of room id as "+room.getId());
         return mapper.map(room,RoomDto.class);
     }

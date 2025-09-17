@@ -3,6 +3,7 @@ package com.codingshuttle.projects.airBnbApp.servicies;
 
 import com.codingshuttle.projects.airBnbApp.dtos.HotelDto;
 import com.codingshuttle.projects.airBnbApp.entities.Hotel;
+import com.codingshuttle.projects.airBnbApp.entities.Room;
 import com.codingshuttle.projects.airBnbApp.exceptions.ResourceNotFoundException;
 import com.codingshuttle.projects.airBnbApp.repositories.HotelRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class HotelServiceImple implements HotelService{
 
     private final ModelMapper mapper;
 
+        private final InventoryService inventoryService;
 
     @Override
     public HotelDto createNewHotel(HotelDto hotelDto) {
@@ -68,6 +70,9 @@ public class HotelServiceImple implements HotelService{
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Hotel of the id :"+id+"is not found so cannot activate it"));
         hotel.setActive(true);
         //TODO : create inventory of hotel
+        for(Room room : hotel.getRooms()){
+            inventoryService.initilizeRoomForAYear(room);
+        }
         log.info("Activated a hotel with id : {}",id);
         hotelRepository.save(hotel);
 

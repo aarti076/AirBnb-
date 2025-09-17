@@ -1,4 +1,6 @@
+ .idea/
 HELP.md
+
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -31,4 +33,3 @@ build/
 
 ### VS Code ###
 .vscode/
- airBnbApp/src/main/resources/
